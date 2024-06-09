@@ -19,7 +19,7 @@ class BlockController extends Controller
     public function index(Request $request)
     {
         $store_blocks = Block::where('store_id', $request->store_id)->paginate(config('default_pagination'));
-        $zones = Zone::where('parent', '=', 0)->paginate(config('default_pagination'));
+        $zones = Zone::where('parent', '0')->where('mode', '=', 'sub')->get();
         $block = '';
         if ($request->block_id) {
             $block = Block::find($request->block_id);

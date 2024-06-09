@@ -229,9 +229,13 @@
                             + {{ \App\CentralLogics\Helpers::format_currency($delivery_man_tips) }}
                         </dd>
                     @endif
-                        <dt class="col-6 total">{{ translate('messages.total') }}:</dt>
-                        <dd class="col-6 total">
-                            {{ \App\CentralLogics\Helpers::format_currency($order->order_amount) }}</dd>
+                    <dt class="col-6 total">{{ translate('messages.total') }}:</dt>
+                    <dd class="col-6 total">
+                        {{ \App\CentralLogics\Helpers::format_currency($order->order_amount) }}
+                        @if ($order->payment_method != 'paid')
+                            {{ translate('messages.payment_method') }}
+                        @endif
+                    </dd>
                 </dl>
                 @if ($order->payment_method != 'cash_on_delivery')
                     <div class="d-flex flex-row justify-content-between border-top">

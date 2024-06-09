@@ -71,7 +71,7 @@ class ZoneController extends Controller
             }
         } else {
             if ($type == 'google_search') {
-                $zones = Zone::where('parent', '>', '0')->get();
+                $zones = Zone::where('parent', '=', '0')->where('mode', '=', 'sub')->get();
                 // TODO:: Make For Loop of This Line
                 $zone_coordinates = $zones->pluck('coordinates')->toArray();
                 foreach ($zones as $key => $value) {

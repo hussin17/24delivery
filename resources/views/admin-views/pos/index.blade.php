@@ -158,16 +158,17 @@
                             </h5>
                         </div>
                         <div class="card-body p-0">
-                            <div class="d-flex flex-wrap flex-row p-2 add--customer-btn">
-                                <select id="customer" name="customer_id"
-                                    data-placeholder="{{ translate('messages.select_customer') }}"
-                                    class="js-data-example-ajax form-control">
-                                </select>
-                                <button class="btn btn--primary rounded font-regular" id="add_new_customer" type="button"
-                                    data-toggle="modal" data-target="#add-customer" title="Add Customer">
-                                    <i class="tio-add-circle-outlined"></i> {{ translate('Add new customer') }}
-                                </button>
-                            </div>
+                                <div class="d-flex flex-wrap flex-row p-2 add--customer-btn">
+                                    <select id="customer" name="customer_id"
+                                        data-placeholder="{{ translate('messages.select_customer') }}"
+                                        class="js-data-example-ajax form-control">
+                                    </select>
+                                    <button class="btn btn--primary rounded font-regular" id="add_new_customer"
+                                        type="button" data-toggle="modal" data-target="#add-customer" title="Add Customer">
+                                        <i class="tio-add-circle-outlined"></i> {{ translate('Add new customer') }}
+                                    </button>
+                                </div>
+
                             <div class="pos--delivery-options">
                                 <div class="d-flex justify-content-between">
                                     <h5 class="card-title">
@@ -188,7 +189,11 @@
                                 </div>
                             </div>
                             <div class='w-100' id="cart">
-                                @include('admin-views.pos._cart', ['store' => $store, 'blocks' => $blocks, 'order_by' => request()->query('order_by')])
+                                @include('admin-views.pos._cart', [
+                                    'store' => $store,
+                                    'blocks' => $blocks,
+                                    'order_by' => request()->query('order_by'),
+                                ])
                             </div>
                         </div>
                     </div>
@@ -659,7 +664,7 @@
 
 
         function updateCart() {
-            $.post('<?php echo e(route('admin.pos.cart_items')); ?>?store_id={{ request()?->store_id }}', {
+            $.post('<?php echo e(route('admin.pos.cart_items')); ?>?store_id={{ request()?->store_id }}&order_by={{ request()?->order_by }}', {
                 _token: '<?php echo e(csrf_token()); ?>'
             }, function(data) {
                 $('#cart').empty().html(data);

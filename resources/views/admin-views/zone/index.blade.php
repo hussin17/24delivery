@@ -95,6 +95,18 @@
                                                 placeholder="{{ translate('messages.Write_a_New_Business_Zone_Name') }}"
                                                 maxlength="191">
                                         </div>
+                                        <div class="form-group lang_form" id="exceptional-form">
+                                            <label class="input-label"
+                                                for="exampleFormControlInput1">{{ translate('messages.Mode') }}
+                                                ({{ translate('messages.main OR sub') }})</label>
+                                            <select type="text" name="mode" class="form-control"
+                                                placeholder="{{ translate('messages.Zone_Mode') }}"
+                                                required>
+                                                <option value="">{{ translate('messages.choose_mode') }}</option>
+                                                <option value="main" >{{ translate('messages.Main') }}</option>
+                                                <option value="sub" >{{ translate('messages.Sub') }}</option>
+                                            </select>
+                                        </div>
                                         @if (Request::query('parent') > 0)
                                             <div class="form-group lang_form" id="exceptional-form">
                                                 <label class="input-label"
@@ -105,6 +117,7 @@
                                                     maxlength="191">
                                             </div>
                                         @endif
+
                                         <input type="hidden" name="lang[]" value="default">
                                         @foreach ($language as $lang)
                                             <div class="form-group d-none lang_form" id="{{ $lang }}-form">

@@ -392,7 +392,9 @@ class POSController extends Controller
                 ->orWhere('ch.name', 'like', '%' . $request->search . '%');
         })->join('zones as ch', 'zones.id', '=', 'ch.parent')
             ->get();
-        return view('admin-views.pos._cart', compact('store', 'blocks'));
+
+            $order_by = $request->query('order_by', '');
+        return view('admin-views.pos._cart', compact('store', 'blocks', 'order_by'));
     }
 
     //removes from Cart
@@ -473,7 +475,7 @@ class POSController extends Controller
     public function place_order(Request $request)
     {
 
-        // dd($request->all());
+        // dd(request()->query('order_by'));
 
         if (!$request->user_id) {
             Toastr::error(translate('messages.no_customer_selected'));
@@ -554,7 +556,7 @@ class POSController extends Controller
         $order->price_from_customer = $request->price_from_customer ?? null;
         $order->created_at = now();
         $order->updated_at = now();
-        $order->created_by = request()->query('order_by') ?? 'customer';
+        $order->created_by = (request()->query('order_by') ?? 'customer') . "_admin";
         $order->otp = rand(1000, 9999);
         $order->save();
 
@@ -871,17 +873,18 @@ class POSController extends Controller
             }
             if ($wise_type == 'city') {
                 if ($type == 'google_search') {
-                    $zones = Zone::where('parent', '>', '0')->get();
+                    $zones = Zone::where('parent', '=', '0')->where('mode', 'sub')->get();
                     // TODO:: Make For Loop of This Line
                     $point = [$lng, $lat];
                     $zone_coordinates = $zones->pluck('coordinates')->toArray();
                     foreach ($zones as $key => $value) {
                         if (self::isPointInsidePolygon($point, $zone_coordinates[$key]['coordinates'][0])) {
+                            // echo $value->name . "\n";
                             // For expected block status
                             if ($value->delivery_price > 0) {
                                 return response()->json(['shipping_price' => (string) $value->delivery_price, 'extra_charge' => (string) $extra_charge, 'distance' => $km], 200);
                             }
-                            $price =  Block::where('store_id', '=', $store->id)->where('block_id', '=', $value['parent'])->first()->shipping_price ?? '0';
+                            $price =  Block::where('store_id', '=', $store->id)->where('block_id', '=', $value['id'])->first()->shipping_price ?? '0';
                             return response()->json($price ? ['shipping_price' => (string) $price] : ['shipping_price' => '0'], 200);
                         }
                     }

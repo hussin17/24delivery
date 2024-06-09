@@ -4211,4 +4211,11 @@
   'purchase_conditions' => 'Purchase conditions',
   'no_payment_gateway_found' => 'No payment gateway found',
   'please_select_an_order_by' => 'Please select an order by',
+  'inside-zones-view-modal' => 'Inside-zones-view-modal',
+  'Mode' => 'Mode',
+  'main OR sub' => 'Main OR sub',
+  'Zone_Mode' => 'Zone Mode',
+  'choose_mode' => 'Choose mode',
+  'Main' => 'Main',
+  'Sub' => 'Sub',
 );

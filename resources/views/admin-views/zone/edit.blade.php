@@ -81,6 +81,18 @@
                                     placeholder="{{ translate('messages.new_zone') }}" maxlength="191"
                                     value="{{ $zone?->getRawOriginal('name') }}">
                             </div>
+                            <div class="form-group lang_form" id="exceptional-form">
+                                <label class="input-label"
+                                    for="exampleFormControlInput1">{{ translate('messages.Mode') }}
+                                    ({{ translate('messages.main OR sub') }})</label>
+                                <select type="text" name="mode" class="form-control"
+                                    placeholder="{{ translate('messages.Zone_Mode') }}"
+                                    required>
+                                    <option value="">{{ translate('messages.choose_mode') }}</option>
+                                    <option value="main" {{ $zone->mode == 'main' ? 'selected' : ''  }}>{{ translate('messages.Main') }}</option>
+                                    <option value="sub" {{ $zone->mode == 'sub' ? 'selected' : ''  }}>{{ translate('messages.Sub') }}</option>
+                                </select>
+                            </div>
                             @if (Request::query('parent') > 0)
                                 <div class="form-group lang_form" id="exceptional-form">
                                     <label class="input-label"

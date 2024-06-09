@@ -29,6 +29,7 @@ class ZoneService
             'name' => $request->name[array_search('default', $request->lang)],
             'parent' => $request['parent'] ? $request['parent'] : 0,
             'delivery_price' => $request['delivery_price'] ? $request['delivery_price'] : 0,
+            'mode' => $request['mode'] ? $request['mode'] : 'sub',
             'coordinates' => new Polygon([new LineString($polygon)]),
             'store_wise_topic' => 'zone_' . $zoneId . '_store',
             'customer_wise_topic' => 'zone_' . $zoneId . '_customer',

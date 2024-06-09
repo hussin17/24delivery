@@ -11,25 +11,25 @@
 
         <tbody>
             <?php
-            $subtotal = 0;
-            $addon_price = 0;
-            $tax = isset($store) ? $store->tax : 0;
-            $discount = 0;
-            $discount_type = 'amount';
-            $discount_on_product = 0;
-            $variation_price = 0;
+                $subtotal = 0;
+                $addon_price = 0;
+                $tax = isset($store) ? $store->tax : 0;
+                $discount = 0;
+                $discount_type = 'amount';
+                $discount_on_product = 0;
+                $variation_price = 0;
             ?>
             @if (session()->has('cart') && count(session()->get('cart')) > 0)
                 <?php
-                $cart = session()->get('cart');
-                if (isset($cart['tax'])) {
-                    dd('TAX Into Cart', $cart);
-                    $tax = $cart['tax'];
-                }
-                if (isset($cart['discount'])) {
-                    $discount = $cart['discount'];
-                    $discount_type = $cart['discount_type'];
-                }
+                    $cart = session()->get('cart');
+                    if (isset($cart['tax'])) {
+                        dd('TAX Into Cart', $cart);
+                        $tax = $cart['tax'];
+                    }
+                    if (isset($cart['discount'])) {
+                        $discount = $cart['discount'];
+                        $discount_type = $cart['discount_type'];
+                    }
                 ?>
                 @foreach (session()->get('cart') as $key => $cartItem)
                     {{-- {{ dd(session()->get('cart')) }} --}}
@@ -135,7 +135,7 @@ $total = $total + $delivery_fee;
         </dd>
 
     </dl>
-    <form action="{{ route('admin.pos.order') }}?store_id={{ request('store_id') }}" id='order_place' method="post">
+    <form action="{{ route('admin.pos.order') }}?store_id={{ request('store_id') }}&order_by={{ request('order_by') }}" id='order_place' method="post">
         @csrf
         <input type="hidden" name="user_id" id="customer_id">
 
@@ -200,7 +200,7 @@ $total = $total + $delivery_fee;
 
         </div>
         @isset($store->pre_order)
-            @if ($store->pre_order == 1)
+            @if ($store->pre_order == 1 && request()->query('order_by') == 'store')
                 <div class="pos--payment-options mt-3 mb-3">
                     <h5 class="mb-3">{{ translate('Order Mode') }}</h5>
                     <ul>
@@ -507,6 +507,9 @@ $total = $total + $delivery_fee;
             url: "{{ route('admin.pos.extra_charge') }}",
             data: data,
         }).done(function(response) {
+
+            console.log(response);
+
             // Handle the response
             $('#delivery_fee_span').text(
                 Number(response.shipping_price) +
